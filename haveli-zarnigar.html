@@ -1,0 +1,516 @@
+<title>Haveli Zarnigar Hotel</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Mulish:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: heritage-hotel site modelled on a tour-guide homepage — top bar, sticky nav, landmark slider, booking bar, banded sections alternating ivory and lapis. */
+:root{
+  --lapis:#1d3461; --lapis-deep:#13233f; --gold:#c39a3e; --gold-soft:#e7d3a2;
+  --bg:#f6f5f0; --surface:#ffffff; --fg:#1c2230; --muted:#5d6475; --line:#e2dfd4;
+  --band:#1d3461; --band-fg:#f3efe3; --accent:#a87b22;
+  --display:"Marcellus", "Cormorant Garamond", Georgia, serif;
+  --body:"Mulish", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10151f; --surface:#171e2c; --fg:#ebe8df; --muted:#a3a9b7; --line:#2a3345;
+  --band:#0c1322; --band-fg:#efe9d8; --accent:#d9b25c; --gold-soft:#5a4a24; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10151f; --surface:#171e2c; --fg:#ebe8df; --muted:#a3a9b7; --line:#2a3345;
+  --band:#0c1322; --band-fg:#efe9d8; --accent:#d9b25c; --gold-soft:#5a4a24; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.65}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--lapis-deep)}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:800}
+.btn{display:inline-flex;align-items:center;gap:.5em;background:var(--gold);color:#1b1708;font-weight:800;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;padding:.85em 1.5em;border:0;border-radius:2px;text-decoration:none;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* top bar */
+.topbar{background:var(--lapis-deep);color:#d9d4c3;font-size:.82rem}
+.topbar .wrap{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;justify-content:space-between;padding-block:8px}
+.topbar .contact{display:flex;gap:6px 22px;flex-wrap:wrap}
+.topbar .social{display:flex;gap:14px}
+.topbar a{text-decoration:none}.topbar a:hover{color:var(--gold)}
+
+/* header */
+header.site{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--lapis);color:#f3efe3;box-shadow:0 2px 14px rgba(0,0,0,.18)}
+header.site .wrap{display:flex;align-items:center;gap:20px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;margin-right:auto}
+.logo svg{width:40px;height:44px;flex:none}
+.logo b{font-family:var(--display);font-weight:400;font-size:1.35rem;letter-spacing:.04em;display:block;line-height:1}
+.logo small{font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-soft)}
+nav.main ul{list-style:none;margin:0;padding:0}
+nav.main>ul{display:flex;gap:4px}
+nav.main li{position:relative}
+nav.main a{display:block;text-decoration:none;font-weight:700;font-size:.9rem;padding:10px 12px}
+nav.main a:hover{color:var(--gold)}
+nav.main .has>a::after{content:" ▾";font-size:.7em;opacity:.7}
+nav.main .drop{position:absolute;left:0;top:100%;min-width:220px;background:var(--surface);color:var(--fg);box-shadow:0 12px 30px rgba(0,0,0,.18);border-top:3px solid var(--gold);opacity:0;visibility:hidden;transform:translateY(6px);transition:.2s}
+nav.main li:hover>.drop,nav.main li:focus-within>.drop{opacity:1;visibility:visible;transform:none}
+nav.main .drop a{font-weight:600;padding:9px 16px;border-bottom:1px solid var(--line)}
+.menu-btn{display:none;background:none;border:1.5px solid rgba(255,255,255,.5);color:inherit;padding:8px 12px;font:inherit;font-weight:700;cursor:pointer}
+@media (max-width:980px){
+  .menu-btn{display:block}
+  header.site .btn{display:none}
+  nav.main{position:absolute;left:0;right:0;top:100%;background:var(--lapis);max-height:0;overflow:hidden;transition:max-height .3s}
+  nav.main.open{max-height:80vh;overflow:auto}
+  nav.main>ul{flex-direction:column;padding:8px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px))}
+  nav.main .drop{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;background:transparent;color:inherit;border:0;padding-left:14px}
+  nav.main .drop a{border:0;font-weight:500;opacity:.85}
+}
+
+/* hero slider */
+.hero{position:relative;height:clamp(420px,62vw,640px);overflow:hidden;background:var(--lapis-deep);color:#fff}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease}
+.slide.on{opacity:1}
+.slide svg{position:absolute;inset:0;width:100%;height:100%}
+.slide .cap{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;gap:16px;max-width:640px}
+.slide .cap::before{content:"";position:absolute;inset:-40px -200px -40px -400px;background:radial-gradient(closest-side,rgba(8,14,28,.55),transparent);z-index:-1}
+.slide h1{font-size:clamp(2.1rem,5vw,3.8rem);text-shadow:0 2px 20px rgba(0,0,0,.35)}
+.slide p{font-size:1.08rem;max-width:46ch;color:#ece6d4}
+.slide .cap .row{display:flex;gap:12px;flex-wrap:wrap}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:46px;height:46px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6);background:rgba(10,18,36,.35);color:#fff;font-size:1.2rem;cursor:pointer}
+.arrow.prev{left:max(14px,env(safe-area-inset-left,0px))}.arrow.next{right:max(14px,env(safe-area-inset-right,0px))}
+.dots{position:absolute;bottom:22px;left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:3}
+.dots button{width:30px;height:4px;border:0;background:rgba(255,255,255,.4);cursor:pointer;padding:0}
+.dots button.on{background:var(--gold)}
+@media (max-width:640px){.arrow{display:none}}
+
+/* booking bar */
+.booking{position:relative;z-index:5;margin-top:-46px}
+.booking form{background:var(--surface);box-shadow:0 18px 40px rgba(10,20,40,.16);border-top:4px solid var(--gold);display:grid;grid-template-columns:repeat(4,1fr) auto;gap:14px;padding:20px;align-items:end}
+.booking label{display:flex;flex-direction:column;gap:6px;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);min-width:0}
+.booking input,.booking select{font:inherit;font-size:.95rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);padding:10px 12px;border-radius:2px;width:100%;letter-spacing:0;text-transform:none;font-weight:600}
+.booking .note{grid-column:1/-1;font-size:.85rem;color:var(--accent);font-weight:700}
+@media (max-width:900px){.booking form{grid-template-columns:1fr 1fr}.booking .btn{grid-column:1/-1;justify-content:center}}
+@media (max-width:460px){.booking form{grid-template-columns:1fr}}
+
+section{padding-block:88px}
+.head{display:flex;flex-direction:column;gap:12px;margin-bottom:44px}
+.head.center{align-items:center;text-align:center}
+.head h2{font-size:clamp(1.9rem,3.6vw,2.8rem)}
+.head p{color:var(--muted);max-width:62ch}
+.ornament{width:120px;height:14px;color:var(--gold)}
+
+/* welcome */
+.welcome .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.welcome .text{display:flex;flex-direction:column;gap:18px;min-width:0}
+.welcome .text p{color:var(--muted);max-width:60ch}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.stat{background:var(--surface);padding:26px 22px;display:flex;flex-direction:column;gap:4px}
+.stat b{font-family:var(--display);font-weight:400;font-size:2.6rem;color:var(--lapis);line-height:1;font-variant-numeric:tabular-nums}
+:root[data-theme="dark"] .stat b{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stat b{color:var(--gold)}}
+.stat span{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--muted)}
+@media (max-width:860px){.welcome .grid{grid-template-columns:1fr;gap:36px}}
+
+/* rooms */
+.rooms{background:var(--surface);border-block:1px solid var(--line)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.card{display:flex;flex-direction:column;background:var(--bg);border:1px solid var(--line);min-width:0}
+.card .img{position:relative;aspect-ratio:4/3;max-width:100%;overflow:hidden;clip-path:path("M0 0 H2000 V2000 H0 Z")}
+.card .img svg{width:100%;height:100%;display:block;transition:transform .6s}
+.card:hover .img svg{transform:scale(1.05)}
+.card .tag{position:absolute;top:14px;left:14px;background:var(--lapis);color:#f3efe3;font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px}
+.card .body{padding:22px;display:flex;flex-direction:column;gap:12px;flex:1}
+.card h3{font-size:1.45rem}
+.card p{color:var(--muted);font-size:.95rem}
+.facts{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.82rem;font-weight:700;color:var(--fg);padding-top:12px;border-top:1px dashed var(--line);margin-top:auto}
+.facts span::before{content:"◆ ";color:var(--gold);font-size:.7em}
+.more{font-weight:800;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);text-decoration:none}
+.more:hover{text-decoration:underline}
+@media (max-width:980px){.cards{grid-template-columns:1fr 1fr}}
+@media (max-width:620px){.cards{grid-template-columns:1fr}}
+
+/* amenities */
+.amen{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+.amen div{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:20px 10px;font-weight:700;font-size:.9rem}
+.amen svg{width:44px;height:44px;color:var(--accent)}
+@media (max-width:900px){.amen{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:460px){.amen{grid-template-columns:repeat(2,1fr)}}
+
+/* neighbourhood feature */
+.feature{background:var(--band);color:var(--band-fg)}
+.feature .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.feature .text{display:flex;flex-direction:column;gap:18px;min-width:0}
+.feature .text p{color:color-mix(in srgb,var(--band-fg) 78%,transparent);max-width:58ch}
+.feature .eyebrow{color:var(--gold)}
+.walks{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column}
+.walks li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.14)}
+.walks b{font-weight:700}
+.walks span{color:var(--gold);font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.feature .art{position:relative;aspect-ratio:4/5;max-width:100%;border:6px solid var(--gold);outline:1px solid rgba(255,255,255,.2);outline-offset:8px}
+.feature .art svg{width:100%;height:100%;display:block}
+@media (max-width:860px){.feature .grid{grid-template-columns:1fr}.feature .art{aspect-ratio:4/3}}
+
+/* testimonials */
+.tslider{position:relative;max-width:820px;margin:0 auto;text-align:center}
+.tq{display:none;flex-direction:column;align-items:center;gap:20px}
+.tq.on{display:flex}
+.tq blockquote{margin:0;font-family:var(--display);font-size:clamp(1.2rem,2.4vw,1.6rem);line-height:1.5}
+.avatar{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:1.6rem;color:#fff;background:var(--lapis);box-shadow:0 0 0 4px var(--bg),0 0 0 6px var(--gold)}
+.who b{display:block;font-weight:800}.who span{color:var(--muted);font-size:.9rem}
+.stars{color:var(--gold);letter-spacing:.2em}
+.tnav{display:flex;justify-content:center;gap:10px;margin-top:28px}
+.tnav button{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--accent);background:transparent;cursor:pointer;padding:0}
+.tnav button.on{background:var(--accent)}
+
+/* cta */
+.cta{position:relative;overflow:hidden;color:#fff;padding-block:0}
+.cta svg.bg{position:absolute;inset:0;width:100%;height:100%}
+.cta .wrap{position:relative;padding-block:96px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
+.cta h2{font-size:clamp(1.9rem,4vw,3rem);text-shadow:0 2px 16px rgba(0,0,0,.4)}
+.cta p{color:#efe6cf;font-size:1.05rem}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:12px}
+.gallery figure{margin:0;position:relative;overflow:hidden;min-width:0}
+.gallery figure svg{width:100%;height:100%;display:block;transition:transform .6s}
+.gallery figure:hover svg{transform:scale(1.06)}
+.gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:24px 14px 10px;color:#fff;font-weight:700;font-size:.88rem;background:linear-gradient(transparent,rgba(5,10,22,.75))}
+.gallery .w2{grid-column:span 2}.gallery .h2{grid-row:span 2}
+@media (max-width:760px){.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:160px}}
+
+/* vision */
+.vision .box{border:1px solid var(--line);background:var(--surface);padding:clamp(28px,5vw,56px);display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center}
+.vision svg{width:110px;height:120px;color:var(--gold)}
+.vision .text{display:flex;flex-direction:column;gap:14px;min-width:0}
+.vision p{color:var(--muted);max-width:66ch}
+@media (max-width:640px){.vision .box{grid-template-columns:1fr}}
+
+/* footer */
+footer{background:var(--lapis-deep);color:#cfcabb;font-size:.92rem}
+footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-block:64px}
+footer h4{font-family:var(--display);font-weight:400;font-size:1.25rem;color:#f3efe3;margin:0 0 16px}
+footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+footer a{text-decoration:none}footer a:hover{color:var(--gold)}
+footer .col{display:flex;flex-direction:column;gap:14px;min-width:0}
+footer .bottom{border-top:1px solid rgba(255,255,255,.1)}
+footer .bottom .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding-block:18px;font-size:.82rem}
+@media (max-width:760px){footer .cols{grid-template-columns:1fr}}
+.proto{background:var(--gold);color:#1b1708;font-weight:800;font-size:.7rem;letter-spacing:.12em;padding:3px 8px;text-transform:uppercase}
+
+/* modal for demo notices */
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(140%);background:var(--lapis);color:#f3efe3;border-left:4px solid var(--gold);padding:14px 18px;max-width:min(92vw,460px);box-shadow:0 12px 30px rgba(0,0,0,.3);z-index:80;transition:transform .35s;font-size:.92rem}
+.toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="contact">
+      <span>☎ +92 300 0000000</span>
+      <span>✉ reservations@havelizarnigar.pk</span>
+      <span>Circular Road, near Delhi Gate, Lahore</span>
+    </div>
+    <div class="social"><a href="#">Facebook</a><a href="#">Instagram</a><a href="#">WhatsApp</a></div>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="#home">
+      <svg viewBox="0 0 40 44" aria-hidden="true"><path d="M3 43V20C3 9 12 3 20 1c8 2 17 8 17 19v23" fill="none" stroke="#c39a3e" stroke-width="2.4"/><path d="M11 43V24c0-6 4-10 9-12 5 2 9 6 9 12v19" fill="none" stroke="#e7d3a2" stroke-width="1.6"/><circle cx="20" cy="27" r="2.6" fill="#c39a3e"/></svg>
+      <span><b>Haveli Zarnigar</b><small>Heritage Hotel · Lahore</small></span>
+    </a>
+    <nav class="main" id="nav">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li class="has"><a href="#about">About Us</a>
+          <ul class="drop"><li><a href="#about">Our Story</a></li><li><a href="#gallery">Photo Gallery</a></li><li><a href="#reviews">Guest Reviews</a></li></ul></li>
+        <li class="has"><a href="#rooms">Rooms &amp; Suites</a>
+          <ul class="drop"><li><a href="#rooms">Courtyard Rooms</a></li><li><a href="#rooms">Jharokha Suites</a></li><li><a href="#rooms">Family Suites</a></li><li><a href="#rooms">Royal Diwan Suite</a></li></ul></li>
+        <li><a href="#amenities">Dining &amp; Amenities</a></li>
+        <li class="has"><a href="#around">Experiences</a>
+          <ul class="drop"><li><a href="#around">Walled City Walk</a></li><li><a href="#around">Tonga Ride</a></li><li><a href="#around">Sufi Music Night</a></li><li><a href="#around">Wagah Border Trip</a></li></ul></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#book">Book Your Stay</a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+  </div>
+</header>
+
+<div class="hero" id="home">
+  <div class="slide on" data-scene="mosque" data-sky="dusk">
+    <div class="wrap cap"><span class="eyebrow" style="color:var(--gold-soft)">Inside the Walled City</span><h1>Wake up a short walk from Badshahi Mosque</h1><p>A restored 1890s haveli turned boutique hotel, with carved jharokhas, a quiet courtyard and rooftop views over old Lahore.</p><div class="row"><a class="btn" href="#book">Book Your Stay</a><a class="btn ghost" href="#rooms">View Rooms</a></div></div>
+  </div>
+  <div class="slide" data-scene="courtyard" data-sky="night">
+    <div class="wrap cap"><span class="eyebrow" style="color:var(--gold-soft)">Courtyard Evenings</span><h1>Lantern-lit dinners under the haveli arches</h1><p>Lahori cuisine served in the central courtyard every evening, with live sitar on weekends.</p><div class="row"><a class="btn" href="#amenities">Dining at the Haveli</a></div></div>
+  </div>
+  <div class="slide" data-scene="garden" data-sky="dawn">
+    <div class="wrap cap"><span class="eyebrow" style="color:var(--gold-soft)">Curated Day Trips</span><h1>Shalimar Gardens, Wagah and Rohtas Fort</h1><p>Our concierge arranges licensed guides, private cars and tonga rides from the haveli gate.</p><div class="row"><a class="btn" href="#around">Explore Experiences</a></div></div>
+  </div>
+  <div class="slide" data-scene="fort" data-sky="day">
+    <div class="wrap cap"><span class="eyebrow" style="color:var(--gold-soft)">Rooftop Terrace</span><h1>Breakfast facing the walls of Lahore Fort</h1><p>Halwa puri, lassi and fresh paratha on the terrace from 7 am, every day of the year.</p><div class="row"><a class="btn" href="#book">Reserve a Room</a></div></div>
+  </div>
+  <button class="arrow prev" aria-label="Previous slide">‹</button>
+  <button class="arrow next" aria-label="Next slide">›</button>
+  <div class="dots"></div>
+</div>
+
+<div class="booking wrap" id="book">
+  <form id="bookForm">
+    <label for="ci">Check-in<input id="ci" type="date"></label>
+    <label for="co">Check-out<input id="co" type="date"></label>
+    <label for="gs">Guests<select id="gs"><option>1 Adult</option><option selected>2 Adults</option><option>2 Adults, 1 Child</option><option>Family (4+)</option></select></label>
+    <label for="rt">Room type<select id="rt"><option>Any room</option><option>Courtyard Room</option><option>Jharokha Suite</option><option>Rooftop Terrace Suite</option><option>Family Haveli Suite</option><option>Garden Deluxe</option><option>Royal Diwan Suite</option></select></label>
+    <button class="btn" type="submit">Check Availability</button>
+  </form>
+</div>
+
+<section class="welcome" id="about">
+  <div class="wrap grid">
+    <div class="text">
+      <span class="eyebrow">Welcome to Haveli Zarnigar</span>
+      <h2 style="font-size:clamp(1.9rem,3.6vw,2.8rem)">Your home in the heart of old Lahore</h2>
+      <svg class="ornament" viewBox="0 0 120 14" aria-hidden="true"><path d="M0 7h46M74 7h46" stroke="currentColor" stroke-width="1.5"/><path d="M60 1l6 6-6 6-6-6z" fill="currentColor"/></svg>
+      <p>Built by a family of spice traders in 1893 and restored brick by brick, Haveli Zarnigar keeps its painted ceilings, wooden jharokhas and inner courtyard. Our team has hosted travellers, families and history lovers for nearly two decades, and we know every lane of the Walled City.</p>
+      <p>Stay with us for warm Lahori hospitality, modern comforts and easy access to the Fort, the Mosque and Food Street, all within walking distance.</p>
+      <div><a class="btn" href="#rooms">Discover Our Rooms</a></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b data-count="42">42</b><span>Rooms &amp; suites</span></div>
+      <div class="stat"><b data-count="18">18</b><span>Years of hospitality</span></div>
+      <div class="stat"><b data-count="9500" data-suffix="+">9500+</b><span>Guests hosted</span></div>
+      <div class="stat"><b data-count="6">6</b><span>Min walk to the Fort</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="rooms" id="rooms">
+  <div class="wrap">
+    <div class="head center">
+      <span class="eyebrow">Featured Rooms &amp; Suites</span>
+      <h2>Stay in a piece of Lahore's history</h2>
+      <p>Every room is different, shaped by the original haveli walls. All include air conditioning, rain shower, Wi-Fi and breakfast on the terrace.</p>
+    </div>
+    <div class="cards" id="roomCards"></div>
+  </div>
+</section>
+
+<section id="amenities">
+  <div class="wrap">
+    <div class="head center"><span class="eyebrow">Dining &amp; Amenities</span><h2>Everything you need, nothing out of place</h2></div>
+    <div class="amen" id="amenGrid"></div>
+  </div>
+</section>
+
+<section class="feature" id="around">
+  <div class="wrap grid">
+    <div class="text">
+      <span class="eyebrow">Around the Haveli</span>
+      <h2 style="font-size:clamp(1.9rem,3.6vw,2.8rem)">The Walled City on your doorstep</h2>
+      <p>Step out of our carved wooden gate and you are among the thirteen historic gates of Lahore. Brass workers, kite makers and chai stalls fill the lanes. The concierge desk books guided walks, tonga rides through the old bazaars and evening qawwali at the shrines.</p>
+      <ul class="walks">
+        <li><b>Badshahi Mosque</b><span>8 min walk</span></li>
+        <li><b>Lahore Fort (Shahi Qila)</b><span>6 min walk</span></li>
+        <li><b>Wazir Khan Mosque</b><span>10 min walk</span></li>
+        <li><b>Fort Road Food Street</b><span>5 min walk</span></li>
+        <li><b>Shalimar Gardens</b><span>20 min drive</span></li>
+        <li><b>Wagah Border Ceremony</b><span>45 min drive</span></li>
+      </ul>
+    </div>
+    <div class="art" data-art="mosque" data-sky="dusk"></div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="head center"><span class="eyebrow">Guest Reviews</span><h2>What our guests say</h2></div>
+    <div class="tslider" id="tslider"></div>
+  </div>
+</section>
+
+<section class="cta">
+  <svg class="bg" data-scene-bg="courtyard" data-sky="night" aria-hidden="true"></svg>
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--gold)">Welcome to Haveli Zarnigar</span>
+    <h2>We take pride in hosting you all the way through</h2>
+    <p>Always ready to welcome you, 24 hours a day.</p>
+    <a class="btn" href="#book" style="margin-top:10px">Book Your Stay Now</a>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="head center"><span class="eyebrow">Photo Gallery</span><h2>Beautiful Lahore, from our rooftop</h2></div>
+    <div class="gallery" id="galleryGrid"></div>
+  </div>
+</section>
+
+<section class="vision" style="padding-top:0">
+  <div class="wrap">
+    <div class="box">
+      <svg viewBox="0 0 110 120" aria-hidden="true"><path d="M8 118V56C8 28 32 10 55 3c23 7 47 25 47 53v62" fill="none" stroke="currentColor" stroke-width="3"/><path d="M26 118V64c0-16 13-28 29-34 16 6 29 18 29 34v54" fill="none" stroke="currentColor" stroke-width="2" opacity=".6"/><circle cx="55" cy="72" r="6" fill="currentColor"/></svg>
+      <div class="text">
+        <span class="eyebrow">Our Vision</span>
+        <h2 style="font-size:clamp(1.6rem,3vw,2.2rem)">Heritage you can live in</h2>
+        <p>Our vision is to be Lahore's most loved heritage hotel: a place where the craftsmanship of the old city is preserved, where guests feel the warmth of a Lahori home, and where every stay supports the artisans and families of the Walled City.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap cols">
+    <div class="col">
+      <h4>Haveli Zarnigar</h4>
+      <p>A restored 19th-century haveli offering boutique rooms, Lahori dining and guided experiences inside the Walled City of Lahore.</p>
+      <div style="display:flex;gap:14px"><a href="#">Facebook</a><a href="#">Instagram</a><a href="#">WhatsApp</a></div>
+    </div>
+    <div class="col">
+      <h4>Featured</h4>
+      <ul><li><a href="#rooms">Jharokha Suite</a></li><li><a href="#rooms">Rooftop Terrace Suite</a></li><li><a href="#rooms">Family Haveli Suite</a></li><li><a href="#around">Walled City Walk</a></li><li><a href="#around">Sufi Music Night</a></li></ul>
+    </div>
+    <div class="col">
+      <h4>Contact</h4>
+      <ul><li>Circular Road, near Delhi Gate, Lahore, Pakistan</li><li>+92 300 0000000</li><li>reservations@havelizarnigar.pk</li><li>Front desk open 24 hours</li></ul>
+    </div>
+  </div>
+  <div class="bottom"><div class="wrap"><span>Copyright © 2026 Haveli Zarnigar Heritage Hotel | Lahore, Pakistan</span><span class="proto">Prototype · demo content</span></div></div>
+</footer>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ---------- illustrated scenes (stand-ins for the client's photos) ---------- */
+const SKIES={
+  dusk:["#2a2350","#b4506a","#f0a35a","#ffd27a"],
+  night:["#070d1f","#16264a","#2c3f6b","#f5e6b8"],
+  dawn:["#3b4a7a","#c98a8a","#f4c999","#fff1c9"],
+  day:["#3f73b0","#7fb0dc","#cfe3f1","#fff6d8"],
+  gold:["#3a2410","#8a4b1e","#d7913f","#ffe0a0"]
+};
+let uid=0;
+function scene(type,sky,opts={}){
+  const s=SKIES[sky]||SKIES.dusk, id="g"+(uid++);
+  const ink=sky==="day"?"#2a3550":"#0d1428", ink2=sky==="day"?"#45557a":"#1b2745";
+  let stars="";
+  if(sky==="night"){for(let i=0;i<60;i++){stars+=`<circle cx="${(i*277)%1600}" cy="${(i*131)%300}" r="${i%5?1.2:2}" fill="#fff" opacity="${.3+(i%4)/6}"/>`}}
+  const sun=sky==="night"?`<circle cx="1260" cy="130" r="46" fill="${s[3]}" opacity=".9"/>`:`<circle cx="${sky==="day"?1250:1180}" cy="${sky==="day"?140:420}" r="${sky==="day"?60:110}" fill="${s[3]}" opacity=".85"/>`;
+  let body="";
+  if(type==="mosque"){
+    const minar=(x,h)=>`<rect x="${x}" y="${560-h}" width="26" height="${h}" fill="${ink}"/><rect x="${x-6}" y="${560-h+40}" width="38" height="8" fill="${ink}"/><rect x="${x-6}" y="${560-h*0.55}" width="38" height="8" fill="${ink}"/><path d="M${x-8} ${560-h}q21-40 42 0z" fill="${ink}"/><path d="M${x+13} ${560-h-36}v-14" stroke="${ink}" stroke-width="3"/>`;
+    const dome=(cx,w,h,y)=>`<path d="M${cx-w} ${y}C${cx-w} ${y-h*.7} ${cx-w*.3} ${y-h} ${cx} ${y-h*1.15}C${cx+w*.3} ${y-h} ${cx+w} ${y-h*.7} ${cx+w} ${y}z" fill="${ink}"/><path d="M${cx} ${y-h*1.15}v-26" stroke="${ink}" stroke-width="4"/><circle cx="${cx}" cy="${y-h*1.15-30}" r="5" fill="${ink}"/>`;
+    let arches="";for(let i=0;i<9;i++){const x=600+i*46;arches+=`<path d="M${x} 560v-50q16-26 32 0v50z" fill="${s[2]}" opacity=".35"/>`}
+    body=`<rect x="0" y="520" width="1600" height="60" fill="${ink2}" opacity=".7"/>
+    ${[...Array(16)].map((_,i)=>`<rect x="${i*104}" y="${470+(i*37)%60}" width="70" height="120" fill="${ink2}" opacity=".55"/>`).join("")}
+    ${minar(420,330)}${minar(1154,330)}${minar(270,250)}${minar(1304,250)}
+    <rect x="540" y="430" width="520" height="130" fill="${ink}"/>
+    ${dome(800,130,120,440)}${dome(640,60,62,440)}${dome(960,60,62,440)}${arches}
+    <path d="M760 560v-90q40-60 80 0v90z" fill="${s[2]}" opacity=".45"/>
+    <rect x="0" y="560" width="1600" height="140" fill="${ink}"/>`;
+  } else if(type==="fort"){
+    let cren="";for(let x=0;x<1600;x+=40){cren+=`<rect x="${x}" y="410" width="24" height="24" fill="${ink}"/>`}
+    let arch="";for(let i=0;i<12;i++){arch+=`<path d="M${110+i*120} 560v-60q30-40 60 0v60z" fill="${s[2]}" opacity=".3"/>`}
+    body=`${cren}<rect x="0" y="430" width="1600" height="270" fill="${ink}"/>
+    <rect x="620" y="300" width="360" height="140" fill="${ink}"/>${[...Array(9)].map((_,i)=>`<rect x="${620+i*42}" y="282" width="24" height="22" fill="${ink}"/>`).join("")}
+    <path d="M740 440v-90q60-80 120 0v90z" fill="${s[2]}" opacity=".4"/>
+    <path d="M260 430v-120h90v120z M1250 430v-120h90v120z" fill="${ink}"/>
+    <path d="M250 310q55-60 110 0z M1240 310q55-60 110 0z" fill="${ink}"/>${arch}
+    <rect x="0" y="600" width="1600" height="100" fill="${ink2}"/>`;
+  } else if(type==="garden"){
+    let trees="";for(let i=0;i<14;i++){const x=60+i*115, h=150+(i%3)*30;trees+=`<path d="M${x} 520c-22-40-18-${h-40} 0-${h}c18 ${40} 22 ${h-40} 0 ${h}z" fill="${ink}"/>`}
+    body=`<rect x="0" y="470" width="1600" height="60" fill="${ink2}" opacity=".6"/>
+    <rect x="640" y="380" width="320" height="140" fill="${ink}"/><path d="M700 380q100-90 200 0z" fill="${ink}"/>
+    ${[...Array(5)].map((_,i)=>`<path d="M${660+i*60} 520v-60q20-30 40 0v60z" fill="${s[2]}" opacity=".35"/>`).join("")}
+    ${trees}<rect x="0" y="520" width="1600" height="180" fill="${ink}"/>
+    <path d="M760 700L790 520h20L840 700z" fill="${s[2]}" opacity=".5"/>
+    ${[...Array(6)].map((_,i)=>`<path d="M${780+i*8} ${640-i*20}q4-30 8 0" stroke="${s[3]}" stroke-width="2" fill="none" opacity=".6"/>`).join("")}`;
+  } else if(type==="courtyard"){
+    let arches="";const n=opts.n||5,w=1600/n;
+    for(let i=0;i<n;i++){const x=i*w;arches+=`<path d="M${x+w*.12} 700V330C${x+w*.12} 220 ${x+w*.3} 170 ${x+w/2} 130C${x+w*.7} 170 ${x+w*.88} 220 ${x+w*.88} 330V700z" fill="none" stroke="${s[3]}" stroke-width="3" opacity=".25"/>`}
+    let lamps="";for(let i=0;i<7;i++){const x=150+i*215;lamps+=`<line x1="${x}" y1="0" x2="${x}" y2="${120+(i%3)*40}" stroke="${s[3]}" opacity=".4"/><circle cx="${x}" cy="${140+(i%3)*40}" r="14" fill="${s[3]}"/><circle cx="${x}" cy="${140+(i%3)*40}" r="40" fill="${s[3]}" opacity=".15"/>`}
+    let frame="";for(let i=0;i<n;i++){const x=i*w;frame+=`<path d="M${x} 0H${x+w}V700H${x+w*.88}V330C${x+w*.88} 220 ${x+w*.7} 170 ${x+w/2} 130C${x+w*.3} 170 ${x+w*.12} 220 ${x+w*.12} 330V700H${x}z" fill="${ink}"/>`}
+    body=`${lamps}<rect x="0" y="560" width="1600" height="140" fill="${ink2}"/>
+    ${[...Array(10)].map((_,i)=>`<path d="M${i*160} 700l80-140h80l-80 140z" fill="${s[2]}" opacity=".08"/>`).join("")}
+    ${frame}${arches}`;
+  }
+  return `<svg viewBox="0 0 1600 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s[0]}"/><stop offset=".55" stop-color="${s[1]}"/><stop offset="1" stop-color="${s[2]}"/></linearGradient></defs>
+  <rect width="1600" height="700" fill="url(#${id})"/>${stars}${sun}${body}</svg>`;
+}
+
+/* hero slides */
+const slides=[...document.querySelectorAll(".slide")];
+slides.forEach(sl=>sl.insertAdjacentHTML("afterbegin",scene(sl.dataset.scene,sl.dataset.sky)));
+const dots=document.querySelector(".dots");
+slides.forEach((_,i)=>{const b=document.createElement("button");b.setAttribute("aria-label","Slide "+(i+1));b.onclick=()=>go(i,true);dots.appendChild(b)});
+let cur=0,timer;
+function go(i,user){slides[cur].classList.remove("on");dots.children[cur].classList.remove("on");cur=(i+slides.length)%slides.length;slides[cur].classList.add("on");dots.children[cur].classList.add("on");if(user)restart()}
+function restart(){clearInterval(timer);if(!matchMedia("(prefers-reduced-motion: reduce)").matches)timer=setInterval(()=>go(cur+1),6000)}
+document.querySelector(".arrow.prev").onclick=()=>go(cur-1,true);
+document.querySelector(".arrow.next").onclick=()=>go(cur+1,true);
+dots.children[0].classList.add("on");restart();
+
+/* misc scene slots */
+document.querySelectorAll("[data-art]").forEach(el=>el.innerHTML=scene(el.dataset.art,el.dataset.sky));
+document.querySelectorAll("[data-scene-bg]").forEach(el=>{el.outerHTML=scene(el.dataset.sceneBg,el.dataset.sky,{n:4}).replace("<svg ",'<svg class="bg" ')});
+
+/* rooms */
+const rooms=[
+ ["Courtyard Room","courtyard","night","Opens onto the lantern-lit inner courtyard. Hand-painted ceiling and original brick niches.",["280 sq ft","Queen bed","Courtyard view"],"Most booked"],
+ ["Jharokha Suite","mosque","dusk","Sit in a carved wooden balcony overlooking the lanes toward Badshahi Mosque.",["420 sq ft","King bed","Mosque view"],"Signature"],
+ ["Rooftop Terrace Suite","fort","day","Private terrace with charpai seating and an uninterrupted view of the Fort walls.",["480 sq ft","King bed","Private terrace"],""],
+ ["Family Haveli Suite","courtyard","gold","Two connected rooms with a shared sitting area. Ideal for families of four to five.",["650 sq ft","King + 2 single","Sitting room"],"Families"],
+ ["Garden Deluxe","garden","dawn","Ground-floor room facing our small char-bagh garden with a fountain.",["320 sq ft","Queen or twin","Garden view"],""],
+ ["Royal Diwan Suite","mosque","night","Our grandest room: mirror-work alcove, private dining diwan and butler service.",["900 sq ft","King bed","Panoramic view"],"Exclusive"]
+];
+document.getElementById("roomCards").innerHTML=rooms.map(r=>`<article class="card"><div class="img">${scene(r[1],r[2],{n:3})}${r[5]?`<span class="tag">${r[5]}</span>`:""}</div><div class="body"><h3>${r[0]}</h3><p>${r[3]}</p><div class="facts">${r[4].map(f=>`<span>${f}</span>`).join("")}</div><a class="more" href="#book">Learn More →</a></div></article>`).join("");
+
+/* amenities */
+const ic={
+ food:'<path d="M8 40h32M12 40c0-10 5-17 12-17s12 7 12 17M24 23v-4M20 19h8" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/>',
+ wifi:'<path d="M6 18c10-9 26-9 36 0M12 25c7-6 17-6 24 0M18 32c4-3 8-3 12 0" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/><circle cx="24" cy="38" r="2.5" fill="currentColor"/>',
+ car:'<path d="M8 32v-6l5-9h22l5 9v6zM8 32v5h6v-5M34 32v5h6v-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linejoin="round"/><circle cx="15" cy="27" r="2" fill="currentColor"/><circle cx="33" cy="27" r="2" fill="currentColor"/>',
+ spa:'<path d="M24 40c-9-4-14-11-14-20 6 1 11 4 14 9 3-5 8-8 14-9 0 9-5 16-14 20zM24 29v11" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linejoin="round"/>',
+ bell:'<path d="M10 36h28M14 36c0-9 4-15 10-15s10 6 10 15M24 21v-4M21 17h6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M8 40h32" stroke="currentColor" stroke-width="2.2"/>',
+ map:'<path d="M8 12l10-4 12 4 10-4v28l-10 4-12-4-10 4zM18 8v28M30 12v28" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linejoin="round"/>'
+};
+const amen=[["food","Courtyard restaurant"],["wifi","Free high-speed Wi-Fi"],["car","Airport pick-up"],["spa","Hammam & massage"],["bell","24-hour room service"],["map","Tour desk & guides"]];
+document.getElementById("amenGrid").innerHTML=amen.map(a=>`<div><svg viewBox="0 0 48 48" aria-hidden="true">${ic[a[0]]}</svg>${a[1]}</div>`).join("");
+
+/* testimonials */
+const tm=[
+ ["Sarah","London, United Kingdom","We stayed four nights in the Jharokha Suite and it was the highlight of our Pakistan trip. Breakfast on the roof with the Fort in front of us is something I will never forget. The staff walked us to Badshahi Mosque on our first morning."],
+ ["Ahmed","Karachi, Pakistan","Brought my parents for a long weekend. The Family Suite was spacious, spotless and full of character. The tonga ride arranged by the concierge was my father's favourite part."],
+ ["Mei","Singapore","A peaceful courtyard right in the middle of the busiest part of Lahore. The food was excellent and the Sufi music night was magical. Highly recommended for anyone who loves history."],
+ ["Daniel","Berlin, Germany","Our team of six stayed here for a cultural trip. Everything was organised perfectly, from airport pick-up to the Wagah Border visit. Warm, honest and professional people."]
+];
+const ts=document.getElementById("tslider");
+ts.innerHTML=tm.map((t,i)=>`<div class="tq${i?"":" on"}"><div class="avatar">${t[0][0]}</div><div class="stars" aria-label="5 stars">★★★★★</div><blockquote>“${t[2]}”</blockquote><div class="who"><b>${t[0]}</b><span>${t[1]}</span></div></div>`).join("")+`<div class="tnav">${tm.map((_,i)=>`<button aria-label="Review ${i+1}" class="${i?"":"on"}"></button>`).join("")}</div>`;
+const tqs=[...ts.querySelectorAll(".tq")],tbs=[...ts.querySelectorAll(".tnav button")];let tc=0;
+function tg(i){tqs[tc].classList.remove("on");tbs[tc].classList.remove("on");tc=i%tqs.length;tqs[tc].classList.add("on");tbs[tc].classList.add("on")}
+tbs.forEach((b,i)=>b.onclick=()=>tg(i));
+if(!matchMedia("(prefers-reduced-motion: reduce)").matches)setInterval(()=>tg(tc+1),8000);
+
+/* gallery */
+const gal=[["mosque","dusk","Badshahi Mosque at sunset","w2 h2"],["courtyard","night","The inner courtyard",""],["fort","day","Lahore Fort walls",""],["garden","dawn","Shalimar Gardens",""],["courtyard","gold","Jharokha Suite interior",""],["mosque","night","Rooftop view by night","w2"]];
+document.getElementById("galleryGrid").innerHTML=gal.map(g=>`<figure class="${g[3]}">${scene(g[0],g[1],{n:3})}<figcaption>${g[2]}</figcaption></figure>`).join("");
+
+/* nav toggle */
+const nav=document.getElementById("nav"),mb=document.getElementById("menuBtn");
+mb.onclick=()=>{const o=nav.classList.toggle("open");mb.setAttribute("aria-expanded",o);mb.textContent=o?"Close":"Menu"};
+nav.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{nav.classList.remove("open");mb.textContent="Menu";mb.setAttribute("aria-expanded","false")}));
+
+/* demo booking */
+const toast=document.getElementById("toast");let tt;
+function note(msg){toast.textContent=msg;toast.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove("show"),4200)}
+document.getElementById("bookForm").addEventListener("submit",e=>{e.preventDefault();note("Prototype preview: on the live site this form will send your dates to the front desk for confirmation.")});
+const d=new Date(),f=x=>x.toISOString().slice(0,10);document.getElementById("ci").value=f(new Date(d.getTime()+7*864e5));document.getElementById("co").value=f(new Date(d.getTime()+10*864e5));
+
+/* counters */
+const counters=document.querySelectorAll("[data-count]");
+if("IntersectionObserver" in window&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
+ const io=new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;io.unobserve(en.target);const el=en.target,end=+el.dataset.count,suf=el.dataset.suffix||"";let t0;const step=t=>{t0??=t;const p=Math.min((t-t0)/1400,1);el.textContent=Math.round(end*(1-Math.pow(1-p,3)))+suf;if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)}),{threshold:.6});
+ counters.forEach(c=>io.observe(c));
+}
+</script>
